@@ -1,13 +1,18 @@
-FROM openjdk:11.0.3-jdk
+FROM adoptopenjdk:11.0.11_9-jdk-hotspot
 
 RUN apt-get update
+RUN apt-get install -y python3.9
 RUN apt-get install -y python3-pip
-
+RUN pip3 install jupyterlab
+RUN apt-get install -y unzip
+# RUN wget https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tgz
+# RUN tar -xf Python-3.9.1.tgz
+# RUN cd Python-3.9.1 && ls
+# RUN configure --enable-optimizations
 # add requirements.txt, written this way to gracefully ignore a missing file
-COPY . .
-RUN ([ -f requirements.txt ] \
-    && pip3 install --no-cache-dir -r requirements.txt) \
-        || pip3 install --no-cache-dir jupyter jupyterlab
+# COPY . .
+
+
 
 USER root
 
@@ -18,6 +23,9 @@ RUN curl -L https://github.com/estebanwasinger/dataweave-jupyter-kernel/releases
 
 RUN unzip dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel.zip -d dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel
 # Unpack and install the kernel
+
+RUN echo python3 --version
+
 RUN cd dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel && mkdir dataweave && mv kernel.json ./dataweave && mv libs ./dataweave \
   && mv logo-64x64.png ./dataweave && mv dataweave-jupyter-kernel-1.0-SNAPSHOT.jar ./dataweave && python3 install.py --sys-prefix
 
