@@ -18,8 +18,8 @@ RUN curl -L https://github.com/estebanwasinger/dataweave-jupyter-kernel/releases
 
 RUN unzip dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel.zip -d dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel
 # Unpack and install the kernel
-RUN cd dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel \
-  && python3 install.py --sys-prefix
+RUN cd dataweave-jupyter-kernel-1.0-SNAPSHOT-kernel && mkdir dataweave && mv kernel.json ./dataweave && mv libs ./dataweave \
+  && mv logo-64x64.png ./dataweave && mv dataweave-jupyter-kernel-1.0-SNAPSHOT.jar ./dataweave && python3 install.py --sys-prefix
 
 # Set up the user environment
 
